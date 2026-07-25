@@ -179,18 +179,15 @@ Hello! How can I help you today?
             userInput.value = '';
 
             try {
-
-                const renderUrl = "https://chat-bot-u5zv.onrender.com"; 
-
-                    const backendBase = renderUrl && renderUrl !== "https://chat-bot-u5zv.onrender.com" 
-                        ? renderUrl.replace(/\/$/, '') 
-                        : "http://127.0.0.1:8000";
-
-                const response = await fetch(`${backendBase}/chat?prompt=${encodeURIComponent(message)}`);
+                // FIXED: Direct clean mapping to your live server API
+                const backendUrl = "https://chat-bot-u5zv.onrender.com";
+                
+                const response = await fetch(`${backendUrl}/chat?prompt=${encodeURIComponent(message)}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+               
 
                 const data = await response.json();
 
