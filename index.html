@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot UI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        /* Chat window container */
+        .chat-container {
+            width: 400px;
+            max-width: 90%;
+            height: 600px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        /* Chat header */
+        .chat-header {
+            background-color: #0078ff;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #2ecc71;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        /* Messages area */
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-color: #f9f9f9;
+        }
+        /* Message bubbles */
+        .message {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            white-space: pre-wrap; /* Preserves newlines from markdown formatting */
+        }
+        .bot-message {
+            background-color: #e9ecef;
+            color: #333333;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+        .user-message {
+            background-color: #0078ff;
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+        /* Input area container */
+        .chat-input-area {
+            padding: 15px;
+            background-color: #ffffff;
+            border-top: 1px solid #eeeeee;
+            display: flex;
+            gap: 10px;
+        }
+        /* Text input field */
+        .chat-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #cccccc;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        .chat-input:focus {
+            border-color: #0078ff;
+        }
+        /* Send button */
+        .send-btn {
+            background-color: #0078ff;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .send-btn:hover {
+            background-color: #0056b3;
+        }
+        /* FIXED: Added clean styling for the left bottom corner paragraph */
+        .chat-footer {
+            padding: 0px 15px 12px 15px;
+            background-color: #ffffff;
+            color: #888888;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <!-- Header -->
+        <div class="chat-header">
+            <span class="status-dot"></span>
+            <span>ChatGPT's 7th Copy Chatbot</span>
+        </div>
+
+        <!-- Messages Box -->
+        <div class="chat-messages" id="chatBox">
+            <div class="message bot-message">
+                Hello! How can I help you today?
+            </div>
+        </div>
+
+        <!-- Input Box -->
+        <div class="chat-input-area">
+            <input type="text" id="userInput" class="chat-input" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+
+        <!-- FIXED: Placed inside the container at the very bottom -->
+        <div class="chat-footer">
+            Created by Dhruvansh & Nishant
+        </div>
+    </div>
+
+    <script>
+        // Handle key presses inside input field
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const chatBox = document.getElementById('chatBox');
+            const message = userInput.value.trim();
+
+            if (message === '') return;
+
+            // Display user's message
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message user-message';
+            userMessageDiv.textContent = message;
+            chatBox.appendChild(userMessageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Clear input field
+            userInput.value = '';
+
+            try {
+
+                const renderUrl = "https://chat-bot-u5zv.onrender.com"; 
+
+                // Automatic Fallback Engine: Uses your live Render server link if provided, otherwise falls back to local machine loop.
+                const backendBase = renderUrl && renderUrl !== "https://chat-bot-u5zv.onrender.com" 
+                    ? renderUrl.replace(/\/$/, '') 
+                    : "http://127.0.0.1:8000";
+
+                const response = await fetch(`${backendBase}/chat?prompt=${encodeURIComponent(message)}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                // Display bot's response
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'message bot-message';
+                botMessageDiv.textContent = data.response;
+                chatBox.appendChild(botMessageDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+            } catch (error) {
+                console.error('Error fetching chat response:', error);
+                
+                // Show error message visually to user
+                const errorMessageDiv = document.createElement('div');
+                errorMessageDiv.className = 'message bot-message';
+                errorMessageDiv.style.color = 'red';
+                errorMessageDiv.textContent = "Error: Failed to reach the chatbot server.";
+                chatBox.appendChild(errorMessageDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
