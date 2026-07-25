@@ -8,19 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
  
 load_dotenv()
 
-origins_str = os.getenv("CORS_ORIGINS", "")
-
-if origins_str:
-    origins = [origin.strip().rstrip("/") for origin in origins_str.split(",") if origin.strip()]
-else:
-    origins = ["http://127.0.0.1:5500"]
-
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
