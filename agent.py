@@ -12,7 +12,7 @@ def chatbot(prompt: str):
         SystemMessage(content="you are a best chatbot which have knowledge of many fields,you are safe and professional"),
         HumanMessage(content= prompt)
     ])
-    return response.content
+    return response.content[0]["text"]
 
 def main():
     chatbot()
