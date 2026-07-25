@@ -179,12 +179,11 @@
             userInput.value = '';
 
             try {
-                // 🚀 UPDATE THIS LINK VALUE: Paste your exact Render URL between the quotes below!
-                // Example: "https://onrender.com"
-                const renderUrl = "https://chat_://onrender.com"; 
+
+                const renderUrl = "https://chat-bot-u5zv.onrender.com"; 
 
                 // Automatic Fallback Engine: Uses your live Render server link if provided, otherwise falls back to local machine loop.
-                const backendBase = renderUrl && renderUrl !== "https://chat_://onrender.com" 
+                const backendBase = renderUrl && renderUrl !== "https://chat-bot-u5zv.onrender.com" 
                     ? renderUrl.replace(/\/$/, '') 
                     : "http://127.0.0.1:8000";
 
