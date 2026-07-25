@@ -3,7 +3,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 
 def chatbot(prompt: str):
     agent = ChatGoogleGenerativeAI(
-    model ="gemini-1.5-flash",
+    model ="gemini-2.5-flash",
     temperature=0.3,
     )
 
