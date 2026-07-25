@@ -114,7 +114,6 @@
         .send-btn:hover {
             background-color: #0056b3;
         }
-        
         /* FIXED: Added clean styling for the left bottom corner paragraph */
         .chat-footer {
             padding: 0px 15px 12px 15px;
@@ -138,7 +137,7 @@
         <!-- Messages Box -->
         <div class="chat-messages" id="chatBox">
             <div class="message bot-message">
-Hello! How can I help you today?
+                Hello! How can I help you today?
             </div>
         </div>
 
@@ -180,8 +179,17 @@ Hello! How can I help you today?
             userInput.value = '';
 
             try {
-                // FIXED URL PATH STRATEGY: Changed to match query parameter syntax
-                const response = await fetch(`http://127.0.0.1:8000/chat?prompt=${encodeURIComponent(message)}`);
+                // 🚀 UPDATE THIS LINK VALUE: Paste your exact Render URL between the quotes below!
+                // Example: "https://onrender.com"
+                const renderUrl = "https://chat_://onrender.com"; 
+
+                // Automatic Fallback Engine: Uses your live Render server link if provided, otherwise falls back to local machine loop.
+                const backendBase = renderUrl && renderUrl !== "https://chat_://onrender.com" 
+                    ? renderUrl.replace(/\/$/, '') 
+                    : "http://127.0.0.1:8000";
+
+                const response = await fetch(`${backendBase}/chat?prompt=${encodeURIComponent(message)}`);
+                
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -197,7 +205,8 @@ Hello! How can I help you today?
 
             } catch (error) {
                 console.error('Error fetching chat response:', error);
-                // Optional: show error message visually to user
+                
+                // Show error message visually to user
                 const errorMessageDiv = document.createElement('div');
                 errorMessageDiv.className = 'message bot-message';
                 errorMessageDiv.style.color = 'red';
