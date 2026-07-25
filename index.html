@@ -228,10 +228,9 @@ Hello! How can I help you today?
                 // Display bot's response
                 const botMessageDiv = document.createElement('div');
                 botMessageDiv.className = 'message bot-message';
-                botMessageDiv.textContent = data.response;
+                botMessageDiv.textContent = data.response; 
                 chatBox.appendChild(botMessageDiv);
                 chatBox.scrollTop = chatBox.scrollHeight;
-
             } catch (error) {
                 console.error('Error fetching chat response:', error);
                 
