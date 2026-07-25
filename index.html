@@ -182,10 +182,9 @@ Hello! How can I help you today?
 
                 const renderUrl = "https://chat-bot-u5zv.onrender.com"; 
 
-                // Automatic Fallback Engine: Uses your live Render server link if provided, otherwise falls back to local machine loop.
-                const backendBase = renderUrl && renderUrl !== "https://chat-bot-u5zv.onrender.com" 
-                    ? renderUrl.replace(/\/$/, '') 
-                    : "http://127.0.0.1:8000";
+                    const backendBase = renderUrl && renderUrl !== "https://chat-bot-u5zv.onrender.com" 
+                        ? renderUrl.replace(/\/$/, '') 
+                        : "http://127.0.0.1:8000";
 
                 const response = await fetch(`${backendBase}/chat?prompt=${encodeURIComponent(message)}`);
                 
