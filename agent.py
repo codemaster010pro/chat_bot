@@ -1,10 +1,10 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 
 def chatbot(prompt: str):
-    agent = ChatGoogleGenerativeAI(
-    model ="gemini-3.5-flash",
-    temperature=0.3,
+    agent = ChatGroq(
+    model ="llama-3.1-8b-instant",
+    temperature=0.4,
     )
 
 
@@ -12,7 +12,7 @@ def chatbot(prompt: str):
         SystemMessage(content="you are a best chatbot which have knowledge of many fields,you are safe and professional"),
         HumanMessage(content= prompt)
     ])
-    return response.content[0]["text"]
+    return response.content
 
 def main():
     chatbot()
